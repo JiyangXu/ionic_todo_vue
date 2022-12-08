@@ -1,8 +1,8 @@
 <template>
   <TodoItem
-    v-for="todo in todos"
-    :key="todo.id"
-    :todo="todo"
+    v-for="todoObj in todos"
+    :key="todoObj.id"
+    :todo="todoObj"
     :checkTodo="checkTodo"
   />
 </template>
@@ -12,7 +12,9 @@ import TodoItem from "./TodoItem";
 export default {
   name: "todoList-item",
   props: ["todos", "checkTodo"],
-  setup() {},
+  setup(props) {
+    console.log(props.todos);
+  },
   components: { TodoItem },
 };
 </script>
