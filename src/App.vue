@@ -1,7 +1,7 @@
 <template>
   <ion-app>
     <Header :addTodo="addTodo" />
-    <TodoList :todos="todos" />
+    <TodoList :todos="todos" :checkTodo="checkTodo" />
     <Footer />
   </ion-app>
 </template>
@@ -24,9 +24,17 @@ export default defineComponent({
     function addTodo(todoObj) {
       todos.value.unshift(todoObj);
     }
+    function checkTodo(id) {
+      todos.value.forEach((todo) => {
+        if (todo.id === id) todo.done = !todo.done;
+      });
+      console.log(todos.value);
+    }
+
     return {
       todos,
       addTodo,
+      checkTodo,
     };
   },
   components: {
