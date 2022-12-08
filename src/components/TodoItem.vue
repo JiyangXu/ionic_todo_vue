@@ -1,31 +1,32 @@
 <template>
   <ion-item lines="none">
-    <!-- <input type="checkbox" :checked="todo.done" @click="handleCheck(todo.id)" /> -->
-    <ion-checkbox
-      slot="start"
-      type="checkbox"
-      v-model="itemTodo.done"
-    ></ion-checkbox>
-    <ion-label>{{ itemTodo.title }}</ion-label>
-    <ion-button color="danger">Delete</ion-button>
+    <input type="checkbox" :checked="todo.done" @click="handleCheck(todo.id)" />
+    <ion-label>{{ todo.title }}</ion-label>
+    <ion-button color="danger" @click="handleDelete(todo.id)"
+      >Delete</ion-button
+    >
   </ion-item>
 </template>
 
 <script>
-import { IonCheckbox, IonItem, IonLabel, IonButton } from "@ionic/vue";
-import { toRefs } from "vue";
+import { IonItem, IonLabel, IonButton } from "@ionic/vue";
+
 export default {
   name: "todoItem-item",
-  props: ["todo"],
+  props: ["todo", "checkTodo", "deleteTodo"],
   setup(props) {
-    const { todo: itemTodo } = toRefs(props);
-    return { itemTodo };
+    function handleCheck(id) {
+      props.checkTodo(id);
+    }
+    function handleDelete(id) {
+      props.deleteTodo(id);
+    }
+    return { handleCheck, handleDelete };
   },
   components: {
     IonItem,
     IonLabel,
     IonButton,
-    IonCheckbox,
   },
 };
 </script>
