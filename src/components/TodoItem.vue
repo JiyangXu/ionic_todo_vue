@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { IonItem, IonLabel, IonButton } from "@ionic/vue";
+import { IonItem, IonLabel, IonButton, alertController } from "@ionic/vue";
 
 export default {
   name: "todoItem-item",
@@ -18,8 +18,26 @@ export default {
     function handleCheck(id) {
       props.checkTodo(id);
     }
-    function handleDelete(id) {
-      props.deleteTodo(id);
+    async function handleDelete(id) {
+      const alert = await alertController.create({
+        header: "Are you sure to delete?",
+        buttons: [
+          {
+            text: "Cancel",
+            role: false,
+          },
+          {
+            text: "OK",
+            role: true,
+          },
+        ],
+      });
+
+      await alert.present();
+
+      const { role } = await alert.onDidDismiss();
+
+      if (role) props.deleteTodo(id);
     }
     return { handleCheck, handleDelete };
   },

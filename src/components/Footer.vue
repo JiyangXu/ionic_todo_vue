@@ -1,18 +1,44 @@
 <template>
-  <ion-item lines="none">
-    <ion-checkbox slot="start"></ion-checkbox>
-    <ion-label>Finished 0 / All 10</ion-label>
-    <ion-button color="danger">Clear All ToDos</ion-button>
+  <ion-item lines="none" v-if="total">
+    <!-- <input type="checkbox" :checked="isAll" @click="checkAll" /> -->
+    <input type="checkbox" v-model="isAll" />
+
+    <ion-label>{{ doneTotal }} /{{ total }}</ion-label>
+    <ion-button color="danger" @click="clearAll">Clear All ToDos</ion-button>
   </ion-item>
 </template>
 
 <script>
-import { IonCheckbox, IonItem, IonLabel, IonButton } from "@ionic/vue";
+import { IonItem, IonLabel, IonButton } from "@ionic/vue";
+import { computed } from "@vue/runtime-core";
 
 export default {
   name: "footer-item",
+  props: ["todos", "checkAllTodo", "clearAllTodo"],
+  setup(props) {
+    const total = computed(() => {
+      return props.todos.length;
+    });
+    const doneTotal = computed(() => {
+      return props.todos.reduce(
+        (pre, current) => pre + (current.done ? 1 : 0),
+        0
+      );
+    });
+    const isAll = computed({
+      get() {
+        return doneTotal.value === total.value && total.value > 0;
+      },
+      set(value) {
+        props.checkAllTodo(value);
+      },
+    });
+    function clearAll() {
+      props.clearAllTodo();
+    }
+    return { total, doneTotal, isAll, clearAll };
+  },
   components: {
-    IonCheckbox,
     IonItem,
     IonLabel,
     IonButton,

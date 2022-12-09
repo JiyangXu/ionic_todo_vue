@@ -2,7 +2,11 @@
   <ion-app>
     <Header :addTodo="addTodo" />
     <TodoList :todos="todos" :checkTodo="checkTodo" :deleteTodo="deleteTodo" />
-    <Footer />
+    <Footer
+      :todos="todos"
+      :checkAllTodo="checkAllTodo"
+      :clearAllTodo="clearAllTodo"
+    />
   </ion-app>
 </template>
 
@@ -34,12 +38,23 @@ export default defineComponent({
         return todo.id !== id;
       });
     }
-
+    function checkAllTodo(done) {
+      todos.value.forEach((todo) => {
+        todo.done = done;
+      });
+    }
+    function clearAllTodo() {
+      todos.value = todos.value.filter((todo) => {
+        return !todo.done;
+      });
+    }
     return {
       todos,
       addTodo,
       checkTodo,
       deleteTodo,
+      checkAllTodo,
+      clearAllTodo,
     };
   },
   components: {
