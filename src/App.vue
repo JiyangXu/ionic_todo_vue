@@ -12,7 +12,7 @@
 
 <script>
 import { IonApp } from "@ionic/vue";
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, watch, onMounted } from "vue";
 import Header from "./components/Header";
 import TodoList from "./components/TodoList";
 import Footer from "./components/Footer";
@@ -20,11 +20,7 @@ import Footer from "./components/Footer";
 export default defineComponent({
   name: "App",
   setup() {
-    let todos = ref([
-      { id: "0001", title: "Watching TV", done: true },
-      { id: "0002", title: "Play Games", done: false },
-      { id: "0003", title: "Reading Books", done: false },
-    ]);
+    let todos = ref([]);
     function addTodo(todoObj) {
       todos.value.unshift(todoObj);
     }
@@ -48,6 +44,16 @@ export default defineComponent({
         return !todo.done;
       });
     }
+    watch(
+      todos,
+      (newTodo) => {
+        localStorage.setItem("todos", JSON.stringify(newTodo));
+      },
+      { deep: true }
+    );
+    onMounted(() => {
+      todos.value = JSON.parse(localStorage.getItem("todos") || []);
+    });
     return {
       todos,
       addTodo,
