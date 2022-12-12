@@ -14,8 +14,8 @@ import { computed } from "@vue/runtime-core";
 
 export default {
   name: "footer-item",
-  props: ["todos", "checkAllTodo", "clearAllTodo"],
-  setup(props) {
+  props: ["todos"],
+  setup(props, { emit }) {
     const total = computed(() => {
       return props.todos.length;
     });
@@ -30,11 +30,11 @@ export default {
         return doneTotal.value === total.value && total.value > 0;
       },
       set(value) {
-        props.checkAllTodo(value);
+        emit("checkAllTodo", value);
       },
     });
     function clearAll() {
-      props.clearAllTodo();
+      emit("clearAllTodo");
     }
     return { total, doneTotal, isAll, clearAll };
   },

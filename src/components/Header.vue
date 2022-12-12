@@ -1,7 +1,11 @@
 <template>
   <ion-item>
     <ion-label position="floating">Enter ToDo</ion-label>
-    <ion-input placeholder="" v-model="title" @keydown.enter="add"></ion-input>
+    <ion-input
+      placeholder=""
+      v-model.lazy.trim="title"
+      @keydown.enter="add"
+    ></ion-input>
   </ion-item>
 </template>
 
@@ -11,13 +15,13 @@ import { nanoid } from "nanoid";
 import { ref } from "vue";
 export default {
   name: "header-item",
-  props: ["addTodo"],
-  setup(props) {
+
+  setup(props, { emit }) {
     let title = ref();
     function add() {
       if (!title.value) return;
       const todoObj = { id: nanoid(), title: title.value, done: false };
-      props.addTodo(todoObj);
+      emit("addTodo", todoObj);
       title.value = "";
     }
     return { add, title };

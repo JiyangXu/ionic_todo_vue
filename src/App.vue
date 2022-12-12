@@ -1,11 +1,11 @@
 <template>
   <ion-app>
-    <Header :addTodo="addTodo" />
+    <Header @addTodo="addTodo" />
     <TodoList :todos="todos" :checkTodo="checkTodo" :deleteTodo="deleteTodo" />
     <Footer
       :todos="todos"
-      :checkAllTodo="checkAllTodo"
-      :clearAllTodo="clearAllTodo"
+      @checkAllTodo="checkAllTodo"
+      @clearAllTodo="clearAllTodo"
     />
   </ion-app>
 </template>
@@ -52,7 +52,7 @@ export default defineComponent({
       { deep: true }
     );
     onMounted(() => {
-      todos.value = JSON.parse(localStorage.getItem("todos") || []);
+      todos.value = JSON.parse(localStorage.getItem("todos") || "[]");
     });
     return {
       todos,
