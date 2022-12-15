@@ -5,6 +5,7 @@
     :todo="todoObj"
     :checkTodo="checkTodo"
     :deleteTodo="deleteTodo"
+    :updateTodo="updateTodo"
   />
 </template>
 
@@ -12,7 +13,7 @@
 import TodoItem from "./TodoItem";
 export default {
   name: "todoList-item",
-  props: ["todos", "checkTodo", "deleteTodo"],
+  props: ["todos", "checkTodo", "deleteTodo", "updateTodo"],
   setup(props) {
     console.log(props.todos);
   },

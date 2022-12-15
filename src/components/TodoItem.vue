@@ -2,7 +2,12 @@
   <ion-item lines="none">
     <input type="checkbox" :checked="todo.done" @click="handleCheck(todo.id)" />
     <ion-label v-show="!todo.isEdit">{{ todo.title }}</ion-label>
-    <input v-show="todo.isEdit" :value="todo.title" @blur="handleBlur(todo)" />
+    <input
+      v-show="todo.isEdit"
+      :value="todo.title"
+      @blur="handleBlur(todo, $event)"
+      ref="inputBox"
+    />
     <ion-button color="secondary" @click="handleEdit(todo)"> Edit </ion-button>
 
     <ion-button color="danger" @click="handleDelete(todo.id)">
@@ -16,7 +21,7 @@ import { IonItem, IonLabel, IonButton, alertController } from "@ionic/vue";
 import { ref } from "vue";
 export default {
   name: "todoItem-item",
-  props: ["todo", "checkTodo", "deleteTodo"],
+  props: ["todo", "checkTodo", "deleteTodo", "updateTodo"],
   setup(props) {
     function handleCheck(id) {
       props.checkTodo(id);
@@ -47,8 +52,10 @@ export default {
 
       todo.isEdit = true;
     }
-    function handleBlur(todo) {
+    function handleBlur(todo, e) {
       todo.isEdit = false;
+      if (!e.target.value.trim()) return alert("value cannot be empty");
+      props.updateTodo(todo.id, e.target.value);
     }
     return { handleCheck, handleDelete, handleEdit, handleBlur };
   },

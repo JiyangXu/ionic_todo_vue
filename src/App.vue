@@ -1,7 +1,12 @@
 <template>
   <ion-app>
     <Header @addTodo="addTodo" />
-    <TodoList :todos="todos" :checkTodo="checkTodo" :deleteTodo="deleteTodo" />
+    <TodoList
+      :todos="todos"
+      :checkTodo="checkTodo"
+      :deleteTodo="deleteTodo"
+      :updateTodo="updateTodo"
+    />
     <Footer
       :todos="todos"
       @checkAllTodo="checkAllTodo"
@@ -44,6 +49,16 @@ export default defineComponent({
         return !todo.done;
       });
     }
+    function updateTodo(id, title) {
+      console.log(id, title);
+      todos.value.forEach((todo) => {
+        if (todo.id === id) {
+          todo.title = title;
+          console.log(todo);
+        }
+      });
+      console.log(todos);
+    }
     watch(
       todos,
       (newTodo) => {
@@ -61,6 +76,7 @@ export default defineComponent({
       deleteTodo,
       checkAllTodo,
       clearAllTodo,
+      updateTodo,
     };
   },
   components: {
